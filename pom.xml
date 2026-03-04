@@ -166,11 +166,8 @@
         <spring-ai-agents.version>0.10.0-SNAPSHOT</spring-ai-agents.version>
 
         <!-- Core dependency versions -->
-        <spring-framework.version>6.2.6</spring-framework.version>
-        <spring-ai.version>1.1.0-SNAPSHOT</spring-ai.version>
-        <spring-boot.version>3.4.2</spring-boot.version>
-        <micrometer.version>1.12.2</micrometer.version>
-        <reactor.version>2023.0.8</reactor.version>
+        <spring-ai.version>2.0.0-M2</spring-ai.version>
+        <spring-boot.version>4.0.1</spring-boot.version>
         <slf4j.version>2.0.9</slf4j.version>
 
         <!-- External SDK versions -->
@@ -198,52 +195,16 @@
         <maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version>
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
-        <spring-javaformat-maven-plugin.version>0.0.43</spring-javaformat-maven-plugin.version>
+        <spring-javaformat-maven-plugin.version>0.0.47</spring-javaformat-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Spring Framework BOM -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>${spring-framework.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <!-- Spring Boot BOM -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- Reactor BOM -->
-            <dependency>
-                <groupId>io.projectreactor</groupId>
-                <artifactId>reactor-bom</artifactId>
-                <version>${reactor.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- Micrometer BOM -->
-            <dependency>
-                <groupId>io.micrometer</groupId>
-                <artifactId>micrometer-bom</artifactId>
-                <version>${micrometer.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- Jackson BOM -->
-            <dependency>
-                <groupId>com.fasterxml.jackson</groupId>
-                <artifactId>jackson-bom</artifactId>
-                <version>${jackson.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
