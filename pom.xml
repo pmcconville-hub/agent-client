@@ -82,16 +82,7 @@
         <!-- docs module removed (Antora replaced by Mintlify) -->
         <!-- samples are standalone projects, not published to Central -->
 
-        <!-- Excluded: docs (Antora, replaced by Mintlify), samples, swebench-agent, legacy starter -->
-        <!--
-        <module>docs</module>
-        <module>samples/hello-world</module>
-        <module>samples/context-engineering</module>
-        <module>samples/sample-cli</module>
-        <module>samples/sample-swebench</module>
-        <module>agent-models/spring-ai-swebench-agent</module>
-        <module>spring-ai-spring-boot-starters/spring-ai-starter-agent</module>
-        -->
+        <!-- Samples are standalone projects, not published to Maven Central -->
     </modules>
 
     <profiles>

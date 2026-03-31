@@ -25,7 +25,9 @@ Spring AI Agents provides autonomous CLI agent integrations for the Spring AI ec
 Transform autonomous CLI agents into pluggable Spring components:
 - **Claude Code CLI** - Production-ready code assistance and autonomous development tasks
 - **Gemini CLI** - Google's Gemini models through command-line interface
-- **SWE-bench Agent** - Software engineering benchmarking and evaluation
+- **Amp CLI** - Sourcegraph's AI coding assistant
+- **Codex CLI** - OpenAI's code generation agent
+- **Amazon Q CLI** - AWS developer assistant
 - **Secure Sandbox Execution** - Docker container isolation with local fallback
 
 ## Quick Start
