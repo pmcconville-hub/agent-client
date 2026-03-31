@@ -11,52 +11,38 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>gemini-cli-sdk</artifactId>
+    <artifactId>agent-model</artifactId>
     <packaging>jar</packaging>
 
-    <name>Gemini CLI SDK</name>
-    <description>Java SDK for interacting with Google Gemini CLI - Low-level binding with rich domain objects</description>
+    <name>Agent Model</name>
+    <description>Core abstractions for Spring AI Agents - AgentModel, AgentTaskRequest, AgentCallResult, and AgentOptions</description>
 
     <dependencies>
-        <!-- Core process execution -->
+        <!-- Spring AI Model (for ModelOptions interface) -->
         <dependency>
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-exec</artifactId>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-model</artifactId>
         </dependency>
-        
-        <!-- JSON processing (versions managed by parent Jackson BOM) -->
+
+        <!-- Sandbox for process execution (LocalSandbox) -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
+            <groupId>org.springaicommunity</groupId>
+            <artifactId>agent-sandbox-core</artifactId>
         </dependency>
+
+        <!-- Docker sandbox (optional, for container-based isolation) -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>org.springaicommunity</groupId>
+            <artifactId>agent-sandbox-docker</artifactId>
+            <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        
-        <!-- Reactive streams -->
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-        </dependency>
-        
-        <!-- JTokkit for tokenization -->
-        <dependency>
-            <groupId>com.knuddels</groupId>
-            <artifactId>jtokkit</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        
-        <!-- Logging -->
+
+        <!-- SLF4J for logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -64,19 +50,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Sandbox TCK for testing -->
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <version>3.6.10</version>
+            <groupId>org.springaicommunity</groupId>
+            <artifactId>agent-sandbox-core</artifactId>
+            <type>test-jar</type>
             <scope>test</scope>
         </dependency>
     </dependencies>

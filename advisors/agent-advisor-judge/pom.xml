@@ -11,61 +11,37 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>gemini-cli-sdk</artifactId>
+    <artifactId>agent-advisor-judge</artifactId>
     <packaging>jar</packaging>
 
-    <name>Gemini CLI SDK</name>
-    <description>Java SDK for interacting with Google Gemini CLI - Low-level binding with rich domain objects</description>
+    <name>Agent Advisor Judge</name>
+    <description>Judge advisor for Spring AI Agents - integrates Judge API with AgentClient</description>
 
     <dependencies>
-        <!-- Core process execution -->
+        <!-- Agent Judge Core - provides Judge, Judgment, Score, Jury APIs -->
         <dependency>
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-exec</artifactId>
+            <groupId>org.springaicommunity</groupId>
+            <artifactId>agent-judge-core</artifactId>
         </dependency>
-        
-        <!-- JSON processing (versions managed by parent Jackson BOM) -->
+
+        <!-- Agent Client for AgentCallAdvisor integration -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
+            <groupId>org.springaicommunity.agents</groupId>
+            <artifactId>agent-client-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
+
+        <!-- Spring AI Agents Judge for AgentJudge -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>org.springaicommunity.agents</groupId>
+            <artifactId>agent-judge-bridge</artifactId>
+            <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        
-        <!-- Reactive streams -->
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-        </dependency>
-        
-        <!-- JTokkit for tokenization -->
-        <dependency>
-            <groupId>com.knuddels</groupId>
-            <artifactId>jtokkit</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -74,9 +50,22 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <version>3.6.10</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Integration test dependencies for AgentClient + Gemini/Claude -->
+        <dependency>
+            <groupId>org.springaicommunity.agents</groupId>
+            <artifactId>agent-gemini</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springaicommunity.agents</groupId>
+            <artifactId>agent-claude</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

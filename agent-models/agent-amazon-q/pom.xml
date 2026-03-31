@@ -27,23 +27,30 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>amazon-q-cli-sdk</artifactId>
+    <artifactId>agent-amazon-q</artifactId>
     <packaging>jar</packaging>
 
-    <name>Amazon Q CLI SDK</name>
-    <description>Java SDK for Amazon Q Developer CLI</description>
+    <name>Agent Amazon Q</name>
+    <description>Spring AI AgentModel adapter for Amazon Q Developer CLI</description>
 
     <dependencies>
-        <!-- ZT Exec for process execution -->
+        <!-- Core Agent Model -->
         <dependency>
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-exec</artifactId>
+            <groupId>org.springaicommunity.agents</groupId>
+            <artifactId>agent-model</artifactId>
         </dependency>
 
-        <!-- SLF4J API -->
+        <!-- Amazon Q CLI SDK -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>org.springaicommunity.agents</groupId>
+            <artifactId>amazon-q-cli-sdk</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Spring Boot AutoConfiguration -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
 
         <!-- Testing -->
@@ -62,6 +69,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springaicommunity.agents</groupId>
+            <artifactId>agent-tck</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
 

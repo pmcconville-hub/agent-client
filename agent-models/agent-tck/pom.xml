@@ -11,44 +11,38 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>hello-world-agent</artifactId>
+    <artifactId>agent-tck</artifactId>
     <packaging>jar</packaging>
 
-    <name>Hello World Agent</name>
-    <description>Simple file creation agent for Spring AI Agents JBang launcher</description>
+    <name>Agent TCK</name>
+    <description>Technology Compatibility Kit for Spring AI Agent implementations - Provides abstract test classes for validating AgentModel and Sandbox implementations</description>
 
     <dependencies>
+        <!-- Agent Model Core - for interfaces that TCK tests against -->
         <dependency>
             <groupId>org.springaicommunity.agents</groupId>
-            <artifactId>agent-launcher</artifactId>
-            <version>${project.version}</version>
+            <artifactId>agent-model</artifactId>
         </dependency>
 
-        <!-- Test dependencies -->
+        <!-- Docker sandbox for Docker infrastructure TCK -->
+        <dependency>
+            <groupId>org.springaicommunity</groupId>
+            <artifactId>agent-sandbox-docker</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- JUnit Jupiter - TCK uses JUnit 5 (compile scope for TCK API) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <scope>test</scope>
-        </dependency>
+
+        <!-- AssertJ - fluent assertions (compile scope for TCK API) -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-exec</artifactId>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -62,19 +56,12 @@
                 <groupId>io.spring.javaformat</groupId>
                 <artifactId>spring-javaformat-maven-plugin</artifactId>
             </plugin>
-            <!-- Do not deploy agent examples to Maven Central -->
+            <!-- Do not deploy TCK to Maven Central - internal use only -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <configuration>
-                    <skipPublishing>true</skipPublishing>
                 </configuration>
             </plugin>
         </plugins>

@@ -8,42 +8,47 @@
         <groupId>org.springaicommunity.agents</groupId>
         <artifactId>agent-client-parent</artifactId>
         <version>0.10.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>hello-world-agent-ai</artifactId>
+    <artifactId>agent-client-core</artifactId>
     <packaging>jar</packaging>
 
-    <name>Hello World AI Agent</name>
-    <description>AI-powered file creation agent using AgentClient for Spring AI Agents JBang launcher</description>
+    <name>Agent Client Core</name>
+    <description>Client-layer facade for Spring AI Agents - AgentClient, Goal, GoalTemplate following ChatClient patterns</description>
 
     <dependencies>
-        <!-- Agent Client for invoking AI agents -->
+        <!-- Core agent model dependency -->
         <dependency>
             <groupId>org.springaicommunity.agents</groupId>
-            <artifactId>agent-client-core</artifactId>
+            <artifactId>agent-model</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <!-- Claude Agent -->
+        <!-- Spring AI Model (for consistency) -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-model</artifactId>
+        </dependency>
+
+        <!-- Spring Boot AutoConfiguration -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <!-- Agent model dependencies for testing -->
         <dependency>
             <groupId>org.springaicommunity.agents</groupId>
             <artifactId>agent-claude</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
-
-        <!-- Gemini Agent -->
         <dependency>
             <groupId>org.springaicommunity.agents</groupId>
             <artifactId>agent-gemini</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <!-- Core framework -->
-        <dependency>
-            <groupId>org.springaicommunity.agents</groupId>
-            <artifactId>agent-launcher</artifactId>
-            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Test dependencies -->
@@ -53,18 +58,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -81,23 +76,12 @@
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>io.spring.javaformat</groupId>
                 <artifactId>spring-javaformat-maven-plugin</artifactId>
-            </plugin>
-            <!-- Do not deploy agent examples to Maven Central -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <configuration>
-                    <skipPublishing>true</skipPublishing>
-                </configuration>
             </plugin>
         </plugins>
     </build>

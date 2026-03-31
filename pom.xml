@@ -12,11 +12,11 @@
     </parent>
 
     <groupId>org.springaicommunity.agents</groupId>
-    <artifactId>spring-ai-agents-parent</artifactId>
+    <artifactId>agent-client-parent</artifactId>
     <version>0.10.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Spring AI Agents Parent</name>
+    <name>Agent Client Parent</name>
     <description>Spring AI Agents - Autonomous CLI Agent Integrations for Spring AI</description>
     <url>https://github.com/spring-ai-community/agent-client</url>
 
@@ -46,10 +46,10 @@
 
     <modules>
         <!-- Base modules first -->
-        <module>agent-models/spring-ai-agent-model</module>
-        <module>agent-models/spring-ai-agent-tck</module>
-        <module>agent-models/spring-ai-agents-judge</module>
-        <module>spring-ai-agent-client</module>
+        <module>agent-models/agent-model</module>
+        <module>agent-models/agent-tck</module>
+        <module>agent-models/agent-judge-bridge</module>
+        <module>agent-client-core</module>
 
         <!-- SDK modules -->
         <module>provider-sdks/gemini-cli-sdk</module>
@@ -59,21 +59,21 @@
         <module>provider-sdks/amazon-q-cli-sdk</module>
 
         <!-- Agent models that depend on base + SDKs -->
-        <module>agent-models/spring-ai-claude-agent</module>
-        <module>agent-models/spring-ai-gemini</module>
-        <module>agent-models/spring-ai-swe-agent</module>
-        <module>agent-models/spring-ai-amp-agent</module>
-        <module>agent-models/spring-ai-codex-agent</module>
-        <module>agent-models/spring-ai-amazon-q-agent</module>
+        <module>agent-models/agent-claude</module>
+        <module>agent-models/agent-gemini</module>
+        <module>agent-models/agent-swe</module>
+        <module>agent-models/agent-amp</module>
+        <module>agent-models/agent-codex</module>
+        <module>agent-models/agent-amazon-q</module>
 
         <!-- Advisor modules -->
-        <module>advisors/spring-ai-advisors-judge</module>
+        <module>advisors/agent-advisor-judge</module>
 
         <!-- Spring Boot Starters -->
-        <module>spring-ai-agents-starters</module>
+        <module>agent-starters</module>
 
         <!-- Core and agents that depend on everything -->
-        <module>spring-ai-agent-launcher</module>
+        <module>agent-launcher</module>
         <module>agents/hello-world-agent</module>
         <module>agents/hello-world-agent-ai</module>
         <module>agents/code-coverage-agent</module>
@@ -281,7 +281,7 @@
             <!-- Project modules -->
             <dependency>
                 <groupId>org.springaicommunity.agents</groupId>
-                <artifactId>spring-ai-agent-model</artifactId>
+                <artifactId>agent-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- Claude Code SDK (from Maven Central) -->
@@ -312,37 +312,37 @@
             </dependency>
             <dependency>
                 <groupId>org.springaicommunity.agents</groupId>
-                <artifactId>spring-ai-codex-agent</artifactId>
+                <artifactId>agent-codex</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springaicommunity.agents</groupId>
-                <artifactId>spring-ai-claude-agent</artifactId>
+                <artifactId>agent-claude</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springaicommunity.agents</groupId>
-                <artifactId>spring-ai-gemini</artifactId>
+                <artifactId>agent-gemini</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springaicommunity.agents</groupId>
-                <artifactId>spring-ai-swe-agent</artifactId>
+                <artifactId>agent-swe</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springaicommunity.agents</groupId>
-                <artifactId>spring-ai-amp-agent</artifactId>
+                <artifactId>agent-amp</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springaicommunity.agents</groupId>
-                <artifactId>spring-ai-agent-client</artifactId>
+                <artifactId>agent-client-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springaicommunity.agents</groupId>
-                <artifactId>spring-ai-starter-agent</artifactId>
+                <artifactId>agent-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
