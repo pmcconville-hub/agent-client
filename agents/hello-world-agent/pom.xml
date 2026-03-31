@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springaicommunity.agents</groupId>
-            <artifactId>spring-ai-agents-core</artifactId>
+            <artifactId>spring-ai-agent-launcher</artifactId>
             <version>${project.version}</version>
         </dependency>
 

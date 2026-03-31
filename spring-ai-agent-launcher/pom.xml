@@ -11,10 +11,10 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>spring-ai-agents-core</artifactId>
+    <artifactId>spring-ai-agent-launcher</artifactId>
     <packaging>jar</packaging>
 
-    <name>Spring AI Agents Core</name>
+    <name>Spring AI Agent Launcher</name>
     <description>Core JBang launcher functionality for Spring AI Agents - AgentSpec, RunSpec, LocalConfigLoader</description>
 
     <dependencies>

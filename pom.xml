@@ -73,7 +73,7 @@
         <module>spring-ai-agents-starters</module>
 
         <!-- Core and agents that depend on everything -->
-        <module>spring-ai-agents-core</module>
+        <module>spring-ai-agent-launcher</module>
         <module>agents/hello-world-agent</module>
         <module>agents/hello-world-agent-ai</module>
         <module>agents/code-coverage-agent</module>
