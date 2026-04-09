@@ -14,7 +14,7 @@ This project was featured in a talk at SpringOne 2025 by Mark Pollack. View the 
 
 [![Maven Central](https://img.shields.io/maven-central/v/org.springaicommunity.agents/agent-starter-claude.svg)](https://search.maven.org/search?q=g:org.springaicommunity.agents)
 
-📖 **[Documentation](https://spring-ai-community.github.io/agent-client/)** | [Getting Started](https://spring-ai-community.github.io/agent-client/getting-started.html) | [API Reference](https://spring-ai-community.github.io/agent-client/api/agentclient.html) | [Agent Bench](https://github.com/spring-ai-community/agent-bench)
+📖 **[Documentation](https://springaicommunity.mintlify.app/projects/incubating/agent-client)** | [Agent Sessions](https://springaicommunity.mintlify.app/agent-client/sessions) | [Agent Bench](https://github.com/spring-ai-community/agent-bench)
 
 > **Note**: This project is currently in development. The repository structure and APIs are subject to change.
 
@@ -95,7 +95,7 @@ An autonomous agent that increased test coverage from **0% to 71.4%** on Spring'
 
 > **Model quality matters**: Same coverage, different code quality. Claude generated production-ready tests while Gemini used slower patterns (@SpringBootTest).
 
-📖 **[Read the complete analysis with test code examples →](https://spring-ai-community.github.io/agent-client/getting-started/code-coverage-agent.html)**
+📖 **[Read the complete analysis with test code examples →](https://springaicommunity.mintlify.app/projects/incubating/agent-client)**
 
 ### Agent Advisors
 
@@ -144,7 +144,7 @@ AgentClient client = AgentClient.builder(agentModel)
 - **Security**: Goal validation, dangerous operation blocking
 - **Observability**: Metrics collection, execution logging, performance tracking
 
-See the [Agent Advisors documentation](https://spring-ai-community.github.io/agent-client/api/advisors.html) for complete details.
+See the [Agent Advisors documentation](https://springaicommunity.mintlify.app/projects/incubating/agent-client) for complete details.
 
 ### Configuration
 
@@ -255,9 +255,8 @@ See the [`samples/`](samples/) directory for complete examples:
 
 ## Documentation
 
-- [Getting Started Guide](docs/quickstart.md)
-- [Architecture Overview](docs/architecture.md)
-- [API Reference](docs/api-reference.md)
+- [Documentation](https://springaicommunity.mintlify.app/projects/incubating/agent-client)
+- [Agent Sessions](https://springaicommunity.mintlify.app/agent-client/sessions)
 
 ## Building and Testing
 
