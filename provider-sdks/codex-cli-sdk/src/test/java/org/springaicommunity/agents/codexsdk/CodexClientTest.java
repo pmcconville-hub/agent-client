@@ -74,19 +74,27 @@ class CodexClientTest {
 	}
 
 	@Test
-	void testExplicitSandboxDisablesFullAuto() {
+	void testExplicitSandboxDoesNotAffectFullAuto() {
 		ExecuteOptions options = ExecuteOptions.builder().fullAuto(true).sandboxMode(SandboxMode.READ_ONLY).build();
 
-		assertThat(options.isFullAuto()).isFalse();
+		assertThat(options.isFullAuto()).isTrue();
 		assertThat(options.getSandboxMode()).isEqualTo(SandboxMode.READ_ONLY);
 	}
 
 	@Test
-	void testExplicitApprovalDisablesFullAuto() {
+	void testExplicitApprovalDoesNotAffectFullAuto() {
 		ExecuteOptions options = ExecuteOptions.builder().fullAuto(true).approvalPolicy(ApprovalPolicy.ALWAYS).build();
 
-		assertThat(options.isFullAuto()).isFalse();
+		assertThat(options.isFullAuto()).isTrue();
 		assertThat(options.getApprovalPolicy()).isEqualTo(ApprovalPolicy.ALWAYS);
+	}
+
+	@Test
+	void testNonFullAutoWithExplicitSandbox() {
+		ExecuteOptions options = ExecuteOptions.builder().fullAuto(false).sandboxMode(SandboxMode.READ_ONLY).build();
+
+		assertThat(options.isFullAuto()).isFalse();
+		assertThat(options.getSandboxMode()).isEqualTo(SandboxMode.READ_ONLY);
 	}
 
 }

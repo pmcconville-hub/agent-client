@@ -154,18 +154,22 @@ public class CodexAgentModel implements AgentModel {
 	}
 
 	private AgentResponse toAgentResponse(ExecuteResult result) {
+		String finishReason = result.isSuccessful() ? "SUCCESS" : "ERROR";
+
 		// Create generation with output
-		AgentGeneration generation = new AgentGeneration(result.getOutput(),
-				new AgentGenerationMetadata(result.getModel(),
-						Map.of("exitCode", result.getExitCode(), "sessionId",
-								result.getSessionId() != null ? result.getSessionId() : "", "activityLog",
-								result.getActivityLog() != null ? result.getActivityLog() : "")));
+		AgentGeneration generation = new AgentGeneration(result.getOutput(), new AgentGenerationMetadata(finishReason,
+				Map.of("exitCode", result.getExitCode(), "model", result.getModel() != null ? result.getModel() : "",
+						"sessionId", result.getSessionId() != null ? result.getSessionId() : "", "activityLog",
+						result.getActivityLog() != null ? result.getActivityLog() : "")));
 
 		// Create response metadata with sessionId
-		AgentResponseMetadata metadata = new AgentResponseMetadata(result.getModel(), result.getDuration(),
-				result.getSessionId() != null ? result.getSessionId() : "",
-				Map.of("exitCode", result.getExitCode(), "successful", result.isSuccessful(), "activityLog",
-						result.getActivityLog() != null ? result.getActivityLog() : ""));
+		AgentResponseMetadata metadata = AgentResponseMetadata.builder()
+			.model(result.getModel() != null ? result.getModel() : "codex-default")
+			.duration(result.getDuration())
+			.sessionId(result.getSessionId() != null ? result.getSessionId() : "")
+			.providerFields(Map.of("exitCode", result.getExitCode(), "successful", result.isSuccessful(), "activityLog",
+					result.getActivityLog() != null ? result.getActivityLog() : ""))
+			.build();
 
 		return new AgentResponse(List.of(generation), metadata);
 	}

@@ -19,6 +19,7 @@ package org.springaicommunity.agents.gemini;
 import org.springaicommunity.agents.geminisdk.GeminiClient;
 import org.springaicommunity.agents.geminisdk.exceptions.GeminiSDKException;
 import org.springaicommunity.agents.geminisdk.transport.CLIOptions;
+import org.springaicommunity.agents.geminisdk.types.Message;
 import org.springaicommunity.agents.geminisdk.types.QueryResult;
 import org.springaicommunity.agents.geminisdk.types.ResultStatus;
 import org.slf4j.Logger;
@@ -96,6 +97,7 @@ public class GeminiAgentModel implements AgentModel {
 			ensureConnected();
 
 			// Build CLI options from request
+			GeminiAgentOptions effectiveOptions = getEffectiveOptions(request);
 			CLIOptions cliOptions = buildCLIOptions(request);
 
 			// Write MCP settings file if MCP servers are configured
@@ -120,7 +122,7 @@ public class GeminiAgentModel implements AgentModel {
 			}
 
 			// Convert to AgentResponse
-			return convertResult(result, startTime);
+			return convertResult(result, startTime, effectiveOptions.getModel());
 
 		}
 		catch (GeminiSDKException e) {
@@ -297,14 +299,14 @@ public class GeminiAgentModel implements AgentModel {
 	/**
 	 * Converts QueryResult from Gemini CLI to Spring AI AgentResponse.
 	 */
-	private AgentResponse convertResult(QueryResult result, Instant startTime) {
+	private AgentResponse convertResult(QueryResult result, Instant startTime, String model) {
 		Duration duration = Duration.between(startTime, Instant.now());
 
 		// Convert messages to generations
 		List<AgentGeneration> generations = new ArrayList<>();
 		if (result.messages() != null && !result.messages().isEmpty()) {
-			// Convert all messages to string representations and create generations
-			String combinedText = result.messages().stream().map(Object::toString).collect(Collectors.joining("\n"));
+			// Extract text content from messages
+			String combinedText = result.messages().stream().map(Message::getContent).collect(Collectors.joining("\n"));
 
 			String finishReason = convertStatusToFinishReason(result.status());
 			AgentGenerationMetadata generationMetadata = new AgentGenerationMetadata(finishReason, Map.of());
@@ -319,7 +321,7 @@ public class GeminiAgentModel implements AgentModel {
 
 		// Create response metadata
 		AgentResponseMetadata responseMetadata = AgentResponseMetadata.builder()
-			.model("gemini-2.5-flash") // Default model
+			.model(model)
 			.duration(duration)
 			.sessionId("") // Gemini CLI doesn't provide session ID
 			.providerFields(result.metadata() != null ? Map.of("gemini_metadata", result.metadata()) : Map.of())

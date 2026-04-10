@@ -296,11 +296,43 @@ public class CLITransport {
 			return messages;
 		}
 
-		// For now, treat the entire output as a single assistant message
-		// Future versions could implement more sophisticated parsing
-		messages.add(TextMessage.assistant(output.trim()));
+		// Filter out CLI diagnostic noise (keytar errors, credential loading, etc.)
+		String filtered = filterCliDiagnostics(output);
+
+		if (filtered.isEmpty()) {
+			messages.add(TextMessage.error("Empty response after filtering CLI diagnostics"));
+			return messages;
+		}
+
+		messages.add(TextMessage.assistant(filtered));
 
 		return messages;
+	}
+
+	private String filterCliDiagnostics(String output) {
+		String[] lines = output.split("\n");
+		List<String> filtered = new ArrayList<>();
+		for (String line : lines) {
+			String trimmed = line.trim();
+			if (trimmed.isEmpty()) {
+				filtered.add(line);
+				continue;
+			}
+			// Skip known Gemini CLI diagnostic patterns
+			if (isCliDiagnosticLine(trimmed)) {
+				logger.debug("Filtered CLI diagnostic: {}", trimmed);
+				continue;
+			}
+			filtered.add(line);
+		}
+		return String.join("\n", filtered).trim();
+	}
+
+	private boolean isCliDiagnosticLine(String line) {
+		return line.startsWith("Keychain initialization encountered an error:") || line.startsWith("Cannot find module")
+				|| line.startsWith("Require stack:") || line.startsWith("- /") && line.contains("node_modules/")
+				|| line.startsWith("Using FileKeychain fallback") || line.startsWith("Loaded cached credentials")
+				|| line.startsWith("Using cached credentials") || line.startsWith("YOLO mode");
 	}
 
 }

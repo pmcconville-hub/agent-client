@@ -138,13 +138,11 @@ public class ExecuteOptions {
 
 		public Builder sandboxMode(SandboxMode sandboxMode) {
 			this.sandboxMode = sandboxMode;
-			this.fullAuto = false; // Explicit sandbox disables full-auto
 			return this;
 		}
 
 		public Builder approvalPolicy(ApprovalPolicy approvalPolicy) {
 			this.approvalPolicy = approvalPolicy;
-			this.fullAuto = false; // Explicit approval disables full-auto
 			return this;
 		}
 

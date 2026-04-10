@@ -126,24 +126,41 @@ public class CLITransport {
 
 			// Codex outputs activity to stderr and final message to stdout
 			// Since zt-exec combines them by default, we parse from combined output
-			// Activity log is everything, final message is the last line(s)
+			// The response appears between the "codex" marker and "tokens used" marker
 			String[] lines = combinedOutput.split("\n");
 
-			// Find where the final assistant message starts (after the last "codex" or
-			// "tokens used" marker)
-			int finalMessageStart = -1;
+			// Find the last "codex" marker and "tokens used" marker
+			int codexMarker = -1;
+			int tokensMarker = -1;
 			for (int i = lines.length - 1; i >= 0; i--) {
-				if (lines[i].startsWith("codex") || lines[i].startsWith("tokens used")) {
-					finalMessageStart = i;
+				if (tokensMarker < 0 && lines[i].trim().equals("tokens used")) {
+					tokensMarker = i;
+				}
+				if (codexMarker < 0 && lines[i].trim().equals("codex")) {
+					codexMarker = i;
+				}
+				if (codexMarker >= 0 && tokensMarker >= 0) {
 					break;
 				}
 			}
 
 			String activityLog = combinedOutput;
 			String finalMessage = "";
-			if (finalMessageStart >= 0 && finalMessageStart < lines.length - 1) {
-				finalMessage = String.join("\n",
-						java.util.Arrays.copyOfRange(lines, finalMessageStart + 1, lines.length));
+			if (codexMarker >= 0) {
+				// Extract text between "codex" marker and "tokens used" (or end of
+				// output)
+				int end = tokensMarker > codexMarker ? tokensMarker : lines.length;
+				if (codexMarker + 1 < end) {
+					finalMessage = String.join("\n", java.util.Arrays.copyOfRange(lines, codexMarker + 1, end));
+				}
+			}
+			else if (tokensMarker >= 0 && tokensMarker > 0) {
+				// Fallback: no "codex" marker, take everything before "tokens used"
+				finalMessage = String.join("\n", java.util.Arrays.copyOfRange(lines, 0, tokensMarker));
+			}
+			else {
+				// No markers found — treat entire output as the message
+				finalMessage = combinedOutput;
 			}
 
 			// Extract model from activity log
@@ -186,15 +203,13 @@ public class CLITransport {
 
 		// exec-specific options
 		if (options.isFullAuto()) {
-			// Full-auto mode: workspace-write sandbox + never approval
 			command.add("--full-auto");
 		}
 		else {
-			// Explicit sandbox and approval settings
+			// Explicit sandbox mode (exec subcommand does not support
+			// --ask-for-approval)
 			command.add("--sandbox");
 			command.add(options.getSandboxMode().getValue());
-			command.add("--ask-for-approval");
-			command.add(options.getApprovalPolicy().getValue());
 		}
 
 		// Working directory via -C flag (if different from current)
