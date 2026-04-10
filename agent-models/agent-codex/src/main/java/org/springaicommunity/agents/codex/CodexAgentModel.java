@@ -127,6 +127,9 @@ public class CodexAgentModel implements AgentModel {
 			if (requestOptions.getApprovalPolicy() != null) {
 				builder.approvalPolicy(requestOptions.getApprovalPolicy());
 			}
+			if (requestOptions.getOutputSchema() != null) {
+				builder.outputSchema(requestOptions.getOutputSchema());
+			}
 			builder.fullAuto(requestOptions.isFullAuto());
 			builder.skipGitCheck(requestOptions.isSkipGitCheck());
 		}
@@ -145,9 +148,10 @@ public class CodexAgentModel implements AgentModel {
 			if (options.getSandboxMode() != null) {
 				builder.sandboxMode(options.getSandboxMode());
 			}
-			if (options.getApprovalPolicy() != null) {
-				builder.approvalPolicy(options.getApprovalPolicy());
-			}
+		}
+
+		if (options.getOutputSchema() != null) {
+			builder.outputSchema(options.getOutputSchema());
 		}
 
 		return builder.build();

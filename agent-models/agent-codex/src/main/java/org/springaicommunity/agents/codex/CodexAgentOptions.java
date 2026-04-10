@@ -20,6 +20,7 @@ import org.springaicommunity.agents.codexsdk.types.ApprovalPolicy;
 import org.springaicommunity.agents.codexsdk.types.SandboxMode;
 import org.springaicommunity.agents.model.AgentOptions;
 
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
 
@@ -44,6 +45,8 @@ public class CodexAgentOptions implements AgentOptions {
 	private boolean skipGitCheck = false;
 
 	private String executablePath;
+
+	private Path outputSchema;
 
 	private String workingDirectory;
 
@@ -87,6 +90,10 @@ public class CodexAgentOptions implements AgentOptions {
 		return executablePath;
 	}
 
+	public Path getOutputSchema() {
+		return outputSchema;
+	}
+
 	@Override
 	public String getWorkingDirectory() {
 		return workingDirectory;
@@ -120,13 +127,11 @@ public class CodexAgentOptions implements AgentOptions {
 
 		public Builder sandboxMode(SandboxMode sandboxMode) {
 			options.sandboxMode = sandboxMode;
-			options.fullAuto = false; // Explicit sandbox disables full-auto
 			return this;
 		}
 
 		public Builder approvalPolicy(ApprovalPolicy approvalPolicy) {
 			options.approvalPolicy = approvalPolicy;
-			options.fullAuto = false; // Explicit approval disables full-auto
 			return this;
 		}
 
@@ -147,6 +152,11 @@ public class CodexAgentOptions implements AgentOptions {
 
 		public Builder executablePath(String executablePath) {
 			options.executablePath = executablePath;
+			return this;
+		}
+
+		public Builder outputSchema(Path outputSchema) {
+			options.outputSchema = outputSchema;
 			return this;
 		}
 
