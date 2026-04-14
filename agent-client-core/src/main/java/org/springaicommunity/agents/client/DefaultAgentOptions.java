@@ -43,6 +43,8 @@ public class DefaultAgentOptions implements AgentOptions {
 
 	private Map<String, McpServerDefinition> mcpServerDefinitions = Map.of();
 
+	private Map<String, Object> jsonSchema;
+
 	public DefaultAgentOptions() {
 	}
 
@@ -85,6 +87,11 @@ public class DefaultAgentOptions implements AgentOptions {
 		return this.mcpServerDefinitions;
 	}
 
+	@Override
+	public Map<String, Object> getJsonSchema() {
+		return this.jsonSchema;
+	}
+
 	public void setWorkingDirectory(String workingDirectory) {
 		this.workingDirectory = workingDirectory;
 	}
@@ -109,6 +116,10 @@ public class DefaultAgentOptions implements AgentOptions {
 		this.mcpServerDefinitions = mcpServerDefinitions != null ? Map.copyOf(mcpServerDefinitions) : Map.of();
 	}
 
+	public void setJsonSchema(Map<String, Object> jsonSchema) {
+		this.jsonSchema = jsonSchema != null ? new HashMap<>(jsonSchema) : null;
+	}
+
 	public static Builder builder() {
 		return new Builder();
 	}
@@ -126,6 +137,8 @@ public class DefaultAgentOptions implements AgentOptions {
 		private Map<String, Object> extras = new HashMap<>();
 
 		private Map<String, McpServerDefinition> mcpServerDefinitions = Map.of();
+
+		private Map<String, Object> jsonSchema;
 
 		public Builder workingDirectory(String workingDirectory) {
 			this.workingDirectory = workingDirectory;
@@ -158,6 +171,11 @@ public class DefaultAgentOptions implements AgentOptions {
 			return this;
 		}
 
+		public Builder jsonSchema(Map<String, Object> jsonSchema) {
+			this.jsonSchema = jsonSchema != null ? new HashMap<>(jsonSchema) : null;
+			return this;
+		}
+
 		// IMPORTANT: When adding fields to DefaultAgentOptions, update this method.
 		public Builder from(AgentOptions agentOptions) {
 			if (agentOptions != null) {
@@ -170,6 +188,8 @@ public class DefaultAgentOptions implements AgentOptions {
 						: new HashMap<>();
 				this.mcpServerDefinitions = agentOptions.getMcpServerDefinitions() != null
 						? agentOptions.getMcpServerDefinitions() : Map.of();
+				this.jsonSchema = agentOptions.getJsonSchema() != null ? new HashMap<>(agentOptions.getJsonSchema())
+						: null;
 			}
 			return this;
 		}
@@ -182,6 +202,7 @@ public class DefaultAgentOptions implements AgentOptions {
 			options.setModel(this.model);
 			options.setExtras(this.extras);
 			options.setMcpServerDefinitions(this.mcpServerDefinitions);
+			options.setJsonSchema(this.jsonSchema);
 			return options;
 		}
 

@@ -75,4 +75,13 @@ public interface AgentOptions extends ModelOptions {
 		return Map.of();
 	}
 
+	/**
+	 * Get the JSON schema for structured output. When set, the agent model should enforce
+	 * that its response conforms to this schema.
+	 * @return the JSON schema as a map, or {@code null} if not set
+	 */
+	default Map<String, Object> getJsonSchema() {
+		return null;
+	}
+
 }

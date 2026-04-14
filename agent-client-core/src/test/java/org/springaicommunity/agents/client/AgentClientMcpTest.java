@@ -209,6 +209,7 @@ class AgentClientMcpTest {
 			.environmentVariables(Map.of("KEY", "val"))
 			.extras(Map.of("extra", "data"))
 			.mcpServerDefinitions(Map.of("brave-search", braveDef))
+			.jsonSchema(Map.of("type", "object", "properties", Map.of("name", Map.of("type", "string"))))
 			.build();
 
 		DefaultAgentOptions copy = DefaultAgentOptions.builder().from(original).build();
@@ -220,6 +221,8 @@ class AgentClientMcpTest {
 		assertThat(copy.getExtras()).isEqualTo(original.getExtras());
 		assertThat(copy.getMcpServerDefinitions()).isEqualTo(original.getMcpServerDefinitions());
 		assertThat(copy.getMcpServerDefinitions()).containsKey("brave-search");
+		assertThat(copy.getJsonSchema()).isEqualTo(original.getJsonSchema());
+		assertThat(copy.getJsonSchema()).containsKey("type");
 	}
 
 	@Test
