@@ -16,6 +16,7 @@
 
 package org.springaicommunity.agents.codex.autoconfigure;
 
+import org.springaicommunity.agents.model.AgentClientMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
@@ -28,6 +29,14 @@ import java.time.Duration;
  */
 @ConfigurationProperties(prefix = "spring.ai.agents.codex")
 public class CodexAgentProperties {
+
+	/**
+	 * Agent client mode controlling default permissiveness. When not set, inherits from
+	 * {@code spring.ai.agents.mode} (default: LOOSE). Provider-specific property
+	 * overrides (e.g., {@code skip-git-check}) take precedence over mode-derived
+	 * defaults.
+	 */
+	private AgentClientMode mode;
 
 	/**
 	 * Model to use for Codex execution.
@@ -45,9 +54,11 @@ public class CodexAgentProperties {
 	private boolean fullAuto = true;
 
 	/**
-	 * Skip git repository check (use with caution).
+	 * Skip git repository check. When not explicitly set, derived from mode: LOOSE
+	 * defaults to true (works in any directory), STRICT defaults to false (requires git
+	 * repository).
 	 */
-	private boolean skipGitCheck = false;
+	private Boolean skipGitCheck;
 
 	/**
 	 * Path to the Codex CLI executable. If null, auto-discovery is used.
@@ -78,11 +89,32 @@ public class CodexAgentProperties {
 		this.fullAuto = fullAuto;
 	}
 
-	public boolean isSkipGitCheck() {
-		return skipGitCheck;
+	public AgentClientMode getMode() {
+		return mode;
 	}
 
-	public void setSkipGitCheck(boolean skipGitCheck) {
+	public void setMode(AgentClientMode mode) {
+		this.mode = mode;
+	}
+
+	/**
+	 * Returns whether to skip the git repository check. If explicitly set via
+	 * {@code spring.ai.agents.codex.skip-git-check}, that value wins. Otherwise, derived
+	 * from mode: LOOSE -> true, STRICT -> false, unset -> true (LOOSE is the default
+	 * mode).
+	 */
+	public boolean isSkipGitCheck() {
+		if (this.skipGitCheck != null) {
+			return this.skipGitCheck;
+		}
+		if (this.mode == AgentClientMode.STRICT) {
+			return false;
+		}
+		// Default: LOOSE behavior — skip git check for frictionless operation
+		return true;
+	}
+
+	public void setSkipGitCheck(Boolean skipGitCheck) {
 		this.skipGitCheck = skipGitCheck;
 	}
 

@@ -23,7 +23,6 @@ import org.springaicommunity.agents.codexsdk.types.ExecuteOptions;
 import org.springaicommunity.agents.model.AgentOptions;
 import org.springaicommunity.sandbox.LocalSandbox;
 import org.springaicommunity.agents.tck.AbstractAgentModelTCK;
-import org.zeroturnaround.exec.ProcessExecutor;
 
 import java.time.Duration;
 
@@ -31,6 +30,11 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * TCK test implementation for CodexAgentModel with LocalSandbox.
+ *
+ * <p>
+ * Uses LOOSE-mode defaults (skipGitCheck=true) so tests run in any directory without
+ * requiring git init. This matches the AgentClientMode.LOOSE behavior that users get out
+ * of the box.
  *
  * @author Spring AI Community
  */
@@ -45,27 +49,24 @@ class CodexAgentLocalSandboxIT extends AbstractAgentModelTCK {
 		assumeTrue(apiKey != null && !apiKey.isBlank(), "OPENAI_API_KEY must be set for Codex integration tests");
 
 		try {
-			// Initialize git repository (Codex requires this)
-			new ProcessExecutor().command("git", "init").directory(tempDir.toFile()).execute();
-
-			// Create LocalSandbox with temp directory
+			// No git init needed — LOOSE mode defaults skipGitCheck=true
 			this.sandbox = new LocalSandbox(tempDir);
 
-			// Create Codex client with default options
+			// Create Codex client with LOOSE-mode defaults
 			ExecuteOptions executeOptions = ExecuteOptions.builder()
 				.dangerouslyBypassSandbox(true)
 				.timeout(Duration.ofMinutes(3))
-				.skipGitCheck(false)
+				.skipGitCheck(true)
 				.build();
 
 			CodexClient codexClient = CodexClient.create(executeOptions, tempDir);
 
-			// Create agent options
+			// Create agent options with LOOSE-mode defaults
 			CodexAgentOptions options = CodexAgentOptions.builder()
 				.model("gpt-5-codex")
 				.timeout(Duration.ofMinutes(3))
 				.dangerouslyBypassSandbox(true)
-				.skipGitCheck(false)
+				.skipGitCheck(true)
 				.build();
 
 			// Create agent model
@@ -83,9 +84,9 @@ class CodexAgentLocalSandboxIT extends AbstractAgentModelTCK {
 	protected AgentOptions createShortTimeoutOptions() {
 		return CodexAgentOptions.builder()
 			.model("gpt-5-codex")
-			.timeout(Duration.ofSeconds(10)) // Short timeout for timeout testing
+			.timeout(Duration.ofSeconds(10))
 			.dangerouslyBypassSandbox(true)
-			.skipGitCheck(false)
+			.skipGitCheck(true)
 			.build();
 	}
 
