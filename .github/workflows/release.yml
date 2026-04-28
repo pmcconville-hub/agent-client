@@ -15,6 +15,11 @@ on:
         required: false
         default: false
         type: boolean
+      validate_commits:
+        description: 'Validate commits for AI attribution (disable if release commit has Co-Authored-By)'
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   release:
@@ -28,7 +33,7 @@ jobs:
       install-claude-cli: true
       install-gemini-cli: true
       install-vendir-cli: true
-      validate-commits: true
+      validate-commits: ${{ inputs.validate_commits }}
       skip-tests: ${{ inputs.skip_tests }}
     secrets:
       MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
