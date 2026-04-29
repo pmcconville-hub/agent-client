@@ -76,7 +76,7 @@ class ClaudeProviderParityIT extends ProviderParityTCK {
 
 	private static boolean isClaudeCliAvailable() {
 		try {
-			return ClaudeCliDiscovery.discoverClaudeCli() != null;
+			return ClaudeCliDiscovery.isClaudeCliAvailable();
 		}
 		catch (Exception e) {
 			return false;
