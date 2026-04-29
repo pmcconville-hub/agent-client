@@ -1,4 +1,0 @@
-# Common configuration for all providers
-logging:
-  level:
-    org.springaicommunity: INFO

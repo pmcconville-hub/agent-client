@@ -1,9 +1,0 @@
-# Claude Code configuration
-# Requires: Claude CLI installed (npm install -g @anthropic-ai/claude-code)
-# Auth: claude auth login (preferred) or ANTHROPIC_API_KEY env var
-spring:
-  ai:
-    agents:
-      claude-code:
-        model: claude-sonnet-4-20250514
-        timeout: PT2M
