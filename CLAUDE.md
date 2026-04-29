@@ -479,14 +479,29 @@ Key requirements:
 - Stage 1a: AgentClientMode enum, Codex skipGitCheck wiring, Parity TCK + CI matrix, `defaults-philosophy.mdx`
 - Stage 1b: Multi-provider sample, tutorial repo, coordination repo
 - Stage 2: Docgen tool (`tools/agent-options-docgen/`), 4 reference pages in mintlify-docs
+- Stage 3: Getting-started, how-to, tutorial pages + Diataxis four-quadrant nav restructure
+
+### Mintlify Docs Structure (Diataxis)
+
+Docs in `~/community/mintlify-docs/agent-client/` follow the Diataxis taxonomy:
+- `tutorial/` — learning by doing (Action + Acquisition)
+- `howto/` — solving specific problems (Action + Application)
+- `reference/` — property tables, API surface (Cognition + Application)
+- `explanation/` — design rationale (Cognition + Acquisition)
 
 ### Reference Doc Generation
 
 Run `./mvnw -f tools/agent-options-docgen/pom.xml compile exec:java -Dexec.args="<project-root> [output-dir]"` to regenerate Markdown reference tables from `*Properties.java` source files. Run before docs PRs when properties change.
 
+### Planned Architecture Changes (Stage 5)
+
+- **Step 5.0**: Extract `AgentClientAutoConfiguration` from `agent-client-core` into separate module — core API should have zero Spring Boot dependency
+- **Step 5.1**: Rename `AgentModel` → `AgentApi` with deprecation shims for one release cycle
+
 ### Remaining
 
-- Stages 3-5: How-to guides, getting-started, terminal-bench eval
+- Stage 4: Terminal-bench post-change evaluation
+- Stage 5: Autoconfigure extraction, AgentModel→AgentApi rename, option promotions
 
 ## Steward Mission
 

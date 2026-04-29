@@ -1,7 +1,7 @@
 # Learnings: AgentClient Multi-Provider Hardening
 
-> **Last compacted**: 2026-04-29T15:15-04:00
-> **Covers through**: Stage 2 complete
+> **Last compacted**: 2026-04-29T16:00-04:00
+> **Covers through**: Stage 3 complete
 
 This is the **Tier 1 compacted summary**. Read this first for the current state of project knowledge. For details on specific steps, see the per-step files (Tier 2).
 
@@ -37,6 +37,18 @@ This is the **Tier 1 compacted summary**. Read this first for the current state 
    - *Source*: Step 2.2
    - *Impact*: Reference page structure: standard table + advanced table with clear labeling.
 
+8. **Tutorial should not require Spring Boot** — `AgentClient` has static factory methods (`create()`, `builder()`) that work standalone. The hello world is plain Java: build a model, create a client, run a goal. Spring Boot is a convenience layer, not a requirement.
+   - *Source*: Step 3.1
+   - *Impact*: Getting-started and tutorial pages show plain Java as primary path. Spring Boot is secondary.
+
+9. **`agent-client-core` has a misplaced Spring Boot dependency** — depends on `spring-boot-autoconfigure` for one file (`AgentClientAutoConfiguration`). Should be extracted to a separate module. Added as Step 5.0.
+   - *Source*: Step 3.1
+   - *Impact*: Architecture fix planned. Core API should be plain Java.
+
+10. **`AgentModel` is a misleading name** — it wraps a CLI agent runtime, not a model. Rename to `AgentApi` planned for Step 5.1 with deprecation shims (old class extends new, `@Deprecated(forRemoval=true)`).
+    - *Source*: Step 3.1
+    - *Impact*: One-release deprecation cycle. `ClaudeAgentModel` → `ClaudeAgentApi`, etc.
+
 ## Patterns Established
 
 - **SDK neutral, agent-models translates**: `ExecuteOptions.skipGitCheck` stays at CLI-native default (`false`). `CodexAgentProperties.isSkipGitCheck()` derives the effective value from mode.
@@ -46,6 +58,7 @@ This is the **Tier 1 compacted summary**. Read this first for the current state 
 - **ProcessBuilder OK in tests**: zt-exec mandate applies to production code. Tests use `ProcessBuilder` for simple one-liners.
 - **Inline tables over Snippet includes**: Generated reference content goes directly into .mdx pages rather than using Mintlify `<Snippet>` cross-file includes. Simpler maintenance, one place to edit.
 - **Standalone docgen tool**: `tools/agent-options-docgen/` is a standalone Maven module (not in parent POM). Run via `./mvnw -f tools/agent-options-docgen/pom.xml compile exec:java`.
+- **Diataxis subdirectories**: Docs organized into `tutorial/`, `howto/`, `reference/`, `explanation/` subdirectories — not just nav groups but physical directory structure matching the quadrants.
 
 ## Deviations from Design
 
@@ -55,6 +68,9 @@ This is the **Tier 1 compacted summary**. Read this first for the current state 
 | Central mode bean | Mode in each provider's Properties | Simpler, no cross-module injection |
 | Wire no-op mode into Claude/Gemini | Properties unchanged | Speculative — add when behavior exists |
 | Steps 1a.1-1a.3 before 1a.4-1a.5 | 1a.4/1a.5/1b.1 first | Customer fix (Joachim) prioritized |
+| Tutorial uses Spring Boot | Plain Java primary | AgentClient doesn't require Spring Boot |
+| Snippet includes for generated tables | Inline tables | Simpler — one file to edit |
+| `AgentModel` naming | Keep for now, rename in 5.1 | Deprecation shim needed for backwards compat |
 
 ## Common Pitfalls
 
@@ -68,6 +84,7 @@ This is the **Tier 1 compacted summary**. Read this first for the current state 
 | Stage 1a | Complete |
 | Stage 1b | Complete |
 | Stage 2 | Complete |
+| Stage 3 | Complete (onramp metric deferred) |
 
 ---
 
@@ -93,6 +110,10 @@ This is the **Tier 1 compacted summary**. Read this first for the current state 
 | `step-2.1-docgen-tool.md` | 2.1 | Docgen tool — QDox source parser, Markdown table generator |
 | `step-2.2-reference-pages.md` | 2.2 | Reference pages — 4 .mdx pages, mint.json nav update |
 | `step-2.3-stage2-summary.md` | 2.3 | Stage 2 consolidation |
+| `step-3.0-stage3-entry.md` | 3.0 | Stage 3 entry — API surface, tutorial repo state |
+| `step-3.1-howto-tutorial-pages.md` | 3.1 | How-to + tutorial pages — plain Java primary, no Spring Boot |
+| `step-3.2-diataxis-nav.md` | 3.2 | Diataxis nav restructure — 4 quadrant subdirectories |
+| `step-3.3-stage3-summary.md` | 3.3 | Stage 3 consolidation |
 
 ---
 
@@ -104,3 +125,4 @@ This is the **Tier 1 compacted summary**. Read this first for the current state 
 | 2026-04-25T00:15-04:00 | Added Stage 0 + partial 1a findings | Steps 0.1-1a.5 complete |
 | 2026-04-26T00:00-04:00 | Stage 1a consolidation | All Stage 1a steps complete |
 | 2026-04-29T15:15-04:00 | Stage 2 consolidation | Docgen tool + reference pages complete |
+| 2026-04-29T16:00-04:00 | Stage 3 consolidation | How-to, tutorials, Diataxis restructure, architecture issues identified |
