@@ -58,7 +58,7 @@ import java.util.Map;
  * @author Spring AI Community
  * @since 1.0.0
  */
-@ConfigurationProperties(prefix = "spring.ai.agents.claude-code.mcp")
+@ConfigurationProperties(prefix = "agent-client.claude.mcp")
 public class ClaudeAgentMcpProperties {
 
 	/**

@@ -26,7 +26,7 @@ import java.time.Duration;
  * @author Spring AI Community
  * @since 0.1.0
  */
-@ConfigurationProperties(prefix = "spring.ai.agents.amp")
+@ConfigurationProperties(prefix = "agent-client.amp")
 public class AmpAgentProperties {
 
 	/**

@@ -28,7 +28,7 @@ import java.util.List;
  * @author Spring AI Community
  * @since 0.1.0
  */
-@ConfigurationProperties(prefix = "spring.ai.agents.amazon-q")
+@ConfigurationProperties(prefix = "agent-client.amazon-q")
 public class AmazonQAgentProperties {
 
 	/**

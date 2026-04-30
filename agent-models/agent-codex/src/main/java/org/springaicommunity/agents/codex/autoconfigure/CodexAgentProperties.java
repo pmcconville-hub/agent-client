@@ -27,7 +27,7 @@ import java.time.Duration;
  * @author Spring AI Community
  * @since 0.1.0
  */
-@ConfigurationProperties(prefix = "spring.ai.agents.codex")
+@ConfigurationProperties(prefix = "agent-client.codex")
 public class CodexAgentProperties {
 
 	/**

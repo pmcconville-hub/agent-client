@@ -76,7 +76,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Spring AI Community
  * @since 1.0.0
  */
-@ConfigurationProperties(prefix = "spring.ai.agents.claude-code")
+@ConfigurationProperties(prefix = "agent-client.claude")
 public class ClaudeAgentProperties {
 
 	/**

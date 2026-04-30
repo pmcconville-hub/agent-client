@@ -26,7 +26,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Spring AI Community
  * @since 0.12.0
  */
-@ConfigurationProperties(prefix = "spring.ai.agents.qwen-code")
+@ConfigurationProperties(prefix = "agent-client.qwen-code")
 public class QwenCodeAgentProperties {
 
 	/**
