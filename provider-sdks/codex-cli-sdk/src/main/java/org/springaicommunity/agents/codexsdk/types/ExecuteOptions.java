@@ -110,7 +110,7 @@ public class ExecuteOptions {
 
 	public static class Builder {
 
-		private String model = "gpt-5-codex";
+		private String model = "gpt-5.4-mini";
 
 		private Duration timeout = Duration.ofMinutes(3);
 

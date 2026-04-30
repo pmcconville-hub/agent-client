@@ -48,6 +48,7 @@ public class CodexAgentAutoConfiguration {
 			.timeout(properties.getTimeout())
 			.fullAuto(properties.isFullAuto())
 			.skipGitCheck(properties.isSkipGitCheck())
+			.dangerouslyBypassSandbox(properties.isDangerouslyBypassSandbox())
 			.build();
 
 		return CodexClient.create(options);
@@ -63,6 +64,7 @@ public class CodexAgentAutoConfiguration {
 			.timeout(properties.getTimeout())
 			.fullAuto(properties.isFullAuto())
 			.skipGitCheck(properties.isSkipGitCheck())
+			.dangerouslyBypassSandbox(properties.isDangerouslyBypassSandbox())
 			.executablePath(properties.getExecutablePath())
 			.build();
 

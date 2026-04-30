@@ -41,7 +41,7 @@ public class CodexAgentProperties {
 	/**
 	 * Model to use for Codex execution.
 	 */
-	private String model = "gpt-5-codex";
+	private String model = "gpt-5.4-mini";
 
 	/**
 	 * Timeout for agent task execution.
@@ -59,6 +59,13 @@ public class CodexAgentProperties {
 	 * repository).
 	 */
 	private Boolean skipGitCheck;
+
+	/**
+	 * Bypass all sandbox restrictions and approval prompts. When not explicitly set,
+	 * derived from mode: LOOSE defaults to true (no sandbox restrictions), STRICT
+	 * defaults to false (uses workspace-write sandbox).
+	 */
+	private Boolean dangerouslyBypassSandbox;
 
 	/**
 	 * Path to the Codex CLI executable. If null, auto-discovery is used.
@@ -116,6 +123,27 @@ public class CodexAgentProperties {
 
 	public void setSkipGitCheck(Boolean skipGitCheck) {
 		this.skipGitCheck = skipGitCheck;
+	}
+
+	/**
+	 * Returns whether to bypass sandbox restrictions. If explicitly set via
+	 * {@code spring.ai.agents.codex.dangerously-bypass-sandbox}, that value wins.
+	 * Otherwise, derived from mode: LOOSE -> true (no sandbox friction), STRICT -> false
+	 * (uses workspace-write sandbox), unset -> true (LOOSE is the default mode).
+	 */
+	public boolean isDangerouslyBypassSandbox() {
+		if (this.dangerouslyBypassSandbox != null) {
+			return this.dangerouslyBypassSandbox;
+		}
+		if (this.mode == AgentClientMode.STRICT) {
+			return false;
+		}
+		// Default: LOOSE behavior — bypass sandbox for frictionless operation
+		return true;
+	}
+
+	public void setDangerouslyBypassSandbox(Boolean dangerouslyBypassSandbox) {
+		this.dangerouslyBypassSandbox = dangerouslyBypassSandbox;
 	}
 
 	public String getExecutablePath() {

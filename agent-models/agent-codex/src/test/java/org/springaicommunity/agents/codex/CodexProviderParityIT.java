@@ -65,7 +65,7 @@ class CodexProviderParityIT extends ProviderParityTCK {
 			CodexClient codexClient = CodexClient.create(executeOptions, tempDir);
 
 			CodexAgentOptions options = CodexAgentOptions.builder()
-				.model("gpt-5-codex")
+				.model("gpt-5.4-mini")
 				.timeout(Duration.ofMinutes(3))
 				.dangerouslyBypassSandbox(true)
 				.skipGitCheck(true)
@@ -83,7 +83,7 @@ class CodexProviderParityIT extends ProviderParityTCK {
 	@Override
 	protected AgentOptions createShortTimeoutOptions() {
 		return CodexAgentOptions.builder()
-			.model("gpt-5-codex")
+			.model("gpt-5.4-mini")
 			.timeout(Duration.ofSeconds(10))
 			.dangerouslyBypassSandbox(true)
 			.skipGitCheck(true)

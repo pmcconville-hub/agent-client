@@ -41,14 +41,14 @@ class CodexClientTest {
 	@Test
 	void testBuilderPattern() {
 		ExecuteOptions options = ExecuteOptions.builder()
-			.model("gpt-5-codex")
+			.model("gpt-5.4-mini")
 			.timeout(Duration.ofMinutes(5))
 			.fullAuto(true)
 			.skipGitCheck(false)
 			.build();
 
 		assertThat(options).isNotNull();
-		assertThat(options.getModel()).isEqualTo("gpt-5-codex");
+		assertThat(options.getModel()).isEqualTo("gpt-5.4-mini");
 		assertThat(options.getTimeout()).isEqualTo(Duration.ofMinutes(5));
 		assertThat(options.isFullAuto()).isTrue();
 		assertThat(options.isSkipGitCheck()).isFalse();
@@ -59,7 +59,7 @@ class CodexClientTest {
 		ExecuteOptions options = ExecuteOptions.defaultOptions();
 
 		assertThat(options).isNotNull();
-		assertThat(options.getModel()).isEqualTo("gpt-5-codex");
+		assertThat(options.getModel()).isEqualTo("gpt-5.4-mini");
 		assertThat(options.isFullAuto()).isTrue();
 		assertThat(options.getTimeout()).isNotNull();
 	}

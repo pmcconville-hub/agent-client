@@ -107,13 +107,14 @@ public class CLITransport {
 
 	private ExecuteResult executeCommand(List<String> command, ExecuteOptions options) {
 		Instant startTime = Instant.now();
-		logger.debug("Executing Codex CLI command: {}", command);
+		logger.debug("Executing Codex CLI command: {}", String.join(" ", command));
 
 		try {
 			ProcessResult result = new ProcessExecutor().command(command)
 				.directory(workingDirectory.toFile())
 				.timeout(options.getTimeout().toMillis(), TimeUnit.MILLISECONDS)
 				.readOutput(true)
+				.redirectInput(new java.io.ByteArrayInputStream(new byte[0]))
 				.destroyOnExit()
 				.execute();
 
@@ -239,7 +240,8 @@ public class CLITransport {
 			command.add(sessionId);
 		}
 
-		// Prompt as final argument
+		// End of flags, prompt as final argument
+		command.add("--");
 		command.add(prompt);
 
 		return command;

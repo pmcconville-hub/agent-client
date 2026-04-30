@@ -63,7 +63,7 @@ class CodexAgentLocalSandboxIT extends AbstractAgentModelTCK {
 
 			// Create agent options with LOOSE-mode defaults
 			CodexAgentOptions options = CodexAgentOptions.builder()
-				.model("gpt-5-codex")
+				.model("gpt-5.4-mini")
 				.timeout(Duration.ofMinutes(3))
 				.dangerouslyBypassSandbox(true)
 				.skipGitCheck(true)
@@ -83,7 +83,7 @@ class CodexAgentLocalSandboxIT extends AbstractAgentModelTCK {
 	@Override
 	protected AgentOptions createShortTimeoutOptions() {
 		return CodexAgentOptions.builder()
-			.model("gpt-5-codex")
+			.model("gpt-5.4-mini")
 			.timeout(Duration.ofSeconds(10))
 			.dangerouslyBypassSandbox(true)
 			.skipGitCheck(true)
