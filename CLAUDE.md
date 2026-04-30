@@ -476,10 +476,12 @@ Key requirements:
 ### Completed
 
 - Stage 0: Baseline captured from code analysis
-- Stage 1a: AgentClientMode enum, Codex skipGitCheck wiring, Parity TCK + CI matrix, `defaults-philosophy.mdx`
+- Stage 1a: AgentClientMode enum, Codex skipGitCheck wiring, Parity TCK + CI matrix
 - Stage 1b: Multi-provider sample, tutorial repo, coordination repo
-- Stage 2: Docgen tool (`tools/agent-options-docgen/`), 4 reference pages in mintlify-docs
-- Stage 3: Getting-started, how-to, tutorial pages + Diataxis four-quadrant nav restructure
+- Stage 2: Docgen tool, reference pages in mintlify-docs
+- Stage 3: Getting-started, how-to, tutorial pages + Diataxis nav restructure
+- Stage 4: LOOSE permission discovery, Codex sandbox fix, Gemini workdir fix, tutorial 02-03
+- Stage 5 (partial): Autoconfigure extraction, AgentApi rename, property prefix rename
 
 ### Mintlify Docs Structure (Diataxis)
 
@@ -502,16 +504,26 @@ Run `./mvnw -f tools/agent-options-docgen/pom.xml compile exec:java -Dexec.args=
 | Claude | `yolo` | `true` (default) | — |
 | Gemini | `yolo` | `true` (default) | — |
 
+### Property Prefix
+
+New prefix: `agent-client.*` (was `spring.ai.agents.*`). Old prefix still works via `DeprecatedPropertyMigrator` with a warning log. Will be removed in a future release.
+
+| Old | New |
+|-----|-----|
+| `spring.ai.agents.claude-code.*` | `agent-client.claude.*` |
+| `spring.ai.agents.codex.*` | `agent-client.codex.*` |
+| `spring.ai.agents.gemini.*` | `agent-client.gemini.*` |
+
 ### Known Gaps
 
-- **Global `spring.ai.agents.mode`** not implemented — only per-provider mode works (e.g. `spring.ai.agents.codex.mode`)
+- **Global `agent-client.mode`** not implemented — only per-provider mode works (e.g. `agent-client.codex.mode`)
 - **No CLI arg validation tests** — SDK flag mappings drift as CLIs update
 - **No daily CI** against latest CLI versions
+- **JSON abstraction** — core modules still use Jackson directly; need `JsonCodec` facade for Quarkus/Micronaut (see `plans/CROSS-FRAMEWORK-DESIGN.md`)
 
 ### Remaining
 
-- Stage 4: Tutorial examples 02-03, consolidation
-- Stage 5: Autoconfigure extraction, AgentModel→AgentApi rename, property prefix rename, CLI validation tests, daily CI, global mode, option promotions
+- Stage 5: CLI validation tests, daily CI, global mode, JSON abstraction, option promotions
 
 ## Steward Mission
 

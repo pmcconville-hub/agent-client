@@ -658,97 +658,36 @@ This roadmap hardens AgentClient for multi-provider reliability after a customer
 
 ---
 
-## Stage 5: Iteration (Future)
+## Stage 5: Architecture Cleanup (0.16.0)
 
 ### Step 5.0: Extract AgentClient Autoconfigure Module
 
-**Problem:** `agent-client-core` depends on `spring-boot-autoconfigure` for a single file (`AgentClientAutoConfiguration.java`). The core API (`AgentClient`, `Goal`, `AgentClientResponse`) should be usable without Spring Boot.
+**Status: COMPLETE** — `5d37d02`
 
-**Entry criteria**:
-- [ ] Stage 4 complete
-- [ ] Read: `plans/learnings/LEARNINGS.md`
-
-**Work items**:
-- [ ] CREATE `agent-client-autoconfigure/` module (or fold `AgentClientAutoConfiguration` into starters)
-- [ ] MOVE `AgentClientAutoConfiguration.java` out of `agent-client-core`
-- [ ] REMOVE `spring-boot-autoconfigure` dependency from `agent-client-core/pom.xml`
-- [ ] VERIFY `agent-client-core` compiles with zero Spring Boot dependencies
-- [ ] VERIFY starters still auto-configure `AgentClient.Builder` bean
-- [ ] UPDATE tutorial and sample projects if imports changed
-
-**Exit criteria**:
-- [ ] `agent-client-core` has no Spring Boot dependency
-- [ ] All starters work unchanged
-- [ ] `./mvnw clean compile` passes
-- [ ] Create: `plans/learnings/step-5.0-autoconfigure-extraction.md`
-- [ ] COMMIT
-
-**Deliverables**: Clean separation — core API is plain Java, autoconfigure is a separate module
+- `agent-client-core` has zero Spring Boot dependencies at compile scope
+- New `agent-client-spring-boot-autoconfigure` module holds `AgentClientAutoConfiguration`
+- All starters updated to depend on autoconfigure module
 
 ---
 
 ### Step 5.1: Rename AgentModel → AgentApi
 
-**Problem:** `AgentModel` implies the interface represents an AI model, but it actually represents the programmatic interface to a CLI agent runtime. `AgentApi` is more accurate and avoids confusion with Spring AI's `ChatModel` (which *does* wrap a model endpoint).
+**Status: COMPLETE** — `5b5c528`
 
-**Deprecation strategy:** Thin shim inheritance for one release cycle. Old names extend new names as `@Deprecated` classes so existing user code compiles with warnings.
-
-**Entry criteria**:
-- [ ] Step 5.0 complete
-- [ ] Read: `plans/learnings/step-5.0-autoconfigure-extraction.md`
-
-**Work items**:
-- [ ] CREATE `AgentApi` interface in `agent-model` as the new name (same contract as `AgentModel`)
-- [ ] DEPRECATE `AgentModel` — make it extend `AgentApi` with `@Deprecated(since = "0.16.0", forRemoval = true)`
-- [ ] RENAME implementations: `ClaudeAgentModel` → `ClaudeAgentApi` (keep old class as deprecated shim extending new)
-  - Same for `CodexAgentModel` → `CodexAgentApi`, `GeminiAgentModel` → `GeminiAgentApi`, etc.
-- [ ] UPDATE `AgentClient.create()` and `AgentClient.builder()` to accept `AgentApi`
-- [ ] UPDATE auto-configurations to produce `AgentApi` beans (keep `AgentModel` bean via shim)
-- [ ] UPDATE all internal references to use new names
-- [ ] VERIFY `./mvnw clean compile` passes
-- [ ] VERIFY existing user code using old names still compiles (with deprecation warnings)
-- [ ] UPDATE documentation pages to use new names
-
-**Exit criteria**:
-- [ ] New names are primary, old names are deprecated shims
-- [ ] All tests pass
-- [ ] Create: `plans/learnings/step-5.1-agentapi-rename.md`
-- [ ] COMMIT
-
-**Deliverables**: `AgentModel` → `AgentApi` rename with deprecation shims
+- `AgentApi` is the new primary interface
+- `AgentModel extends AgentApi` with `@Deprecated(since = "0.16.0", forRemoval = true)`
+- Client layer (`AgentClient`, `DefaultAgentClient`, advisors) uses `AgentApi` internally
+- All implementations still work via shim — zero breakage
 
 ---
 
 ### Step 5.2: Rename Property Prefix `spring.ai.agents` → `agent-client`
 
-**Problem:** `spring.ai.agents.*` implies the project is part of Spring AI, but it's a community project. The Spring AI team has expressed that this naming is not welcome. `agent-client.*` matches the project name and avoids borrowing credibility.
+**Status: COMPLETE** — `85c81cd`
 
-**Deprecation strategy:** Accept both prefixes for one release. Log a warning on startup when old prefix is detected. Remove old prefix in the following release.
-
-**Entry criteria**:
-- [ ] Step 5.1 complete (combine with AgentApi rename for a single breaking-change release)
-- [ ] Read: `plans/learnings/step-5.1-agentapi-rename.md`
-
-**Work items**:
-- [ ] UPDATE all `@ConfigurationProperties(prefix = "spring.ai.agents.*")` to `agent-client.*`
-  - `agent-client.claude.*` (was `spring.ai.agents.claude-code`)
-  - `agent-client.codex.*` (was `spring.ai.agents.codex`)
-  - `agent-client.gemini.*` (was `spring.ai.agents.gemini`)
-  - `agent-client.mode` (was `spring.ai.agents.mode`)
-  - Same for amazon-q, amp, qwen-code
-- [ ] ADD deprecated property binding that maps old `spring.ai.agents.*` to new `agent-client.*` with startup warning
-- [ ] UPDATE all documentation (mintlify reference pages, README, CLAUDE.md)
-- [ ] UPDATE tutorial repo `application-*.yml` files
-- [ ] VERIFY `./mvnw clean compile` passes
-- [ ] VERIFY old properties still work (with deprecation warning)
-
-**Exit criteria**:
-- [ ] New prefix is primary, old prefix triggers deprecation warning
-- [ ] All tests pass
-- [ ] Create: `plans/learnings/step-5.2-property-prefix-rename.md`
-- [ ] COMMIT
-
-**Deliverables**: `spring.ai.agents.*` → `agent-client.*` property prefix with deprecation bridge
+- New prefix: `agent-client.claude`, `agent-client.codex`, `agent-client.gemini`, etc.
+- `DeprecatedPropertyMigrator` (EnvironmentPostProcessor) maps old `spring.ai.agents.*` to new prefix with warning log
+- Both prefixes work during deprecation period — old prefix will be removed in a future release
 
 ---
 
