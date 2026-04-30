@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springaicommunity.agents.client.advisor.api.AgentCallAdvisor;
+import org.springaicommunity.agents.model.AgentApi;
 import org.springaicommunity.agents.model.AgentModel;
 import org.springaicommunity.agents.model.AgentOptions;
 import org.springaicommunity.agents.model.mcp.McpServerCatalog;
@@ -36,7 +37,7 @@ import org.springaicommunity.agents.model.mcp.McpServerCatalog;
  */
 public class DefaultAgentClientBuilder implements AgentClient.Builder {
 
-	private final AgentModel agentModel;
+	private final AgentApi agentApi;
 
 	private AgentOptions defaultOptions;
 
@@ -46,8 +47,8 @@ public class DefaultAgentClientBuilder implements AgentClient.Builder {
 
 	private List<String> defaultMcpServerNames = new ArrayList<>();
 
-	public DefaultAgentClientBuilder(AgentModel agentModel) {
-		this.agentModel = Objects.requireNonNull(agentModel, "AgentModel cannot be null");
+	public DefaultAgentClientBuilder(AgentApi agentApi) {
+		this.agentApi = Objects.requireNonNull(agentApi, "AgentApi cannot be null");
 		this.defaultOptions = new DefaultAgentOptions();
 		this.defaultAdvisors = new ArrayList<>();
 	}
@@ -110,7 +111,7 @@ public class DefaultAgentClientBuilder implements AgentClient.Builder {
 
 	@Override
 	public AgentClient build() {
-		return new DefaultAgentClient(this.agentModel, this.defaultOptions, this.defaultAdvisors, this.mcpServerCatalog,
+		return new DefaultAgentClient(this.agentApi, this.defaultOptions, this.defaultAdvisors, this.mcpServerCatalog,
 				this.defaultMcpServerNames);
 	}
 

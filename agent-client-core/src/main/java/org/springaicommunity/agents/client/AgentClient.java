@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import org.springaicommunity.agents.client.advisor.api.AgentCallAdvisor;
+import org.springaicommunity.agents.model.AgentApi;
 import org.springaicommunity.agents.model.AgentModel;
 import org.springaicommunity.agents.model.AgentOptions;
 import org.springaicommunity.agents.model.mcp.McpServerCatalog;
@@ -47,21 +48,21 @@ import org.springaicommunity.agents.model.mcp.McpServerCatalog;
 public interface AgentClient {
 
 	/**
-	 * Create a new agent client from an agent model.
-	 * @param agentModel the underlying agent model
+	 * Create a new agent client from an agent API.
+	 * @param agentApi the underlying agent API
 	 * @return a new agent client
 	 */
-	static AgentClient create(AgentModel agentModel) {
-		return builder(agentModel).build();
+	static AgentClient create(AgentApi agentApi) {
+		return builder(agentApi).build();
 	}
 
 	/**
 	 * Create a new agent client builder.
-	 * @param agentModel the underlying agent model
+	 * @param agentApi the underlying agent API
 	 * @return a new builder
 	 */
-	static Builder builder(AgentModel agentModel) {
-		return new DefaultAgentClientBuilder(agentModel);
+	static Builder builder(AgentApi agentApi) {
+		return new DefaultAgentClientBuilder(agentApi);
 	}
 
 	/**

@@ -16,7 +16,7 @@
 package org.springaicommunity.agents.client.autoconfigure;
 
 import org.springaicommunity.agents.client.AgentClient;
-import org.springaicommunity.agents.model.AgentModel;
+import org.springaicommunity.agents.model.AgentApi;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -33,8 +33,8 @@ import org.springframework.context.annotation.Scope;
  * of the builder.
  *
  * <p>
- * Requires an {@link AgentModel} bean to be present in the application context, which is
- * typically provided by a model-specific autoconfiguration (e.g.,
+ * Requires an {@link AgentApi} bean to be present in the application context, which is
+ * typically provided by a provider-specific autoconfiguration (e.g.,
  * ClaudeAgentAutoConfiguration).
  *
  * @author Spring AI Community
@@ -42,19 +42,19 @@ import org.springframework.context.annotation.Scope;
  */
 @AutoConfiguration
 @ConditionalOnClass(AgentClient.class)
-@ConditionalOnBean(AgentModel.class)
+@ConditionalOnBean(AgentApi.class)
 public class AgentClientAutoConfiguration {
 
 	/**
 	 * Creates an AgentClient.Builder with prototype scope.
-	 * @param agentModel the configured agent model
+	 * @param agentApi the configured agent API
 	 * @return a new builder instance for each injection point
 	 */
 	@Bean
 	@Scope("prototype")
 	@ConditionalOnMissingBean
-	public AgentClient.Builder agentClientBuilder(AgentModel agentModel) {
-		return AgentClient.builder(agentModel);
+	public AgentClient.Builder agentClientBuilder(AgentApi agentApi) {
+		return AgentClient.builder(agentApi);
 	}
 
 }

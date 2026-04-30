@@ -20,17 +20,17 @@ import org.springaicommunity.agents.client.AgentClientRequest;
 import org.springaicommunity.agents.client.AgentClientResponse;
 import org.springaicommunity.agents.client.advisor.api.AgentCallAdvisor;
 import org.springaicommunity.agents.client.advisor.api.AgentCallAdvisorChain;
-import org.springaicommunity.agents.model.AgentModel;
+import org.springaicommunity.agents.model.AgentApi;
 import org.springaicommunity.agents.model.AgentTaskRequest;
 
 /**
- * Terminal advisor that converts client-layer requests to model-layer requests and
- * invokes the actual {@link AgentModel}.
+ * Terminal advisor that converts client-layer requests to agent API requests and invokes
+ * the actual {@link AgentApi}.
  *
  * <p>
- * This advisor is typically last in the chain and performs the actual agent model call.
- * It should have the lowest precedence to run after all other advisors (context
- * injection, validation, etc.).
+ * This advisor is typically last in the chain and performs the actual agent call. It
+ * should have the lowest precedence to run after all other advisors (context injection,
+ * validation, etc.).
  *
  * @author Mark Pollack
  * @since 0.1.0
@@ -41,20 +41,20 @@ public class AgentModelCallAdvisor implements AgentCallAdvisor {
 
 	private static final int ORDER = LOWEST_PRECEDENCE;
 
-	private final AgentModel agentModel;
+	private final AgentApi agentApi;
 
-	public AgentModelCallAdvisor(AgentModel agentModel) {
-		this.agentModel = agentModel;
+	public AgentModelCallAdvisor(AgentApi agentApi) {
+		this.agentApi = agentApi;
 	}
 
 	@Override
 	public AgentClientResponse adviseCall(AgentClientRequest request, AgentCallAdvisorChain chain) {
-		// Convert client request to model request
+		// Convert client request to agent API request
 		AgentTaskRequest taskRequest = new AgentTaskRequest(request.goal().getContent(), request.workingDirectory(),
 				request.options());
 
-		// Call the agent model (terminal operation)
-		var agentResponse = this.agentModel.call(taskRequest);
+		// Call the agent API (terminal operation)
+		var agentResponse = this.agentApi.call(taskRequest);
 
 		// Wrap in client response with context
 		return new AgentClientResponse(agentResponse, request.context());

@@ -29,6 +29,7 @@ import java.util.Set;
 import org.springaicommunity.agents.client.advisor.AgentModelCallAdvisor;
 import org.springaicommunity.agents.client.advisor.DefaultAgentCallAdvisorChain;
 import org.springaicommunity.agents.client.advisor.api.AgentCallAdvisor;
+import org.springaicommunity.agents.model.AgentApi;
 import org.springaicommunity.agents.model.AgentModel;
 import org.springaicommunity.agents.model.AgentOptions;
 import org.springaicommunity.agents.model.AgentResponse;
@@ -44,7 +45,7 @@ import org.springaicommunity.agents.model.mcp.McpServerDefinition;
  */
 public class DefaultAgentClient implements AgentClient {
 
-	private final AgentModel agentModel;
+	private final AgentApi agentApi;
 
 	private final AgentOptions defaultOptions;
 
@@ -55,47 +56,45 @@ public class DefaultAgentClient implements AgentClient {
 	private final List<String> defaultMcpServerNames;
 
 	/**
-	 * Create a new DefaultAgentClient with the given agent model.
-	 * @param agentModel the underlying agent model
+	 * Create a new DefaultAgentClient with the given agent API.
+	 * @param agentApi the underlying agent API
 	 */
-	public DefaultAgentClient(AgentModel agentModel) {
-		this(agentModel, new DefaultAgentOptions(), new ArrayList<>(), null, List.of());
+	public DefaultAgentClient(AgentApi agentApi) {
+		this(agentApi, new DefaultAgentOptions(), new ArrayList<>(), null, List.of());
 	}
 
 	/**
-	 * Create a new DefaultAgentClient with the given agent model and default options.
-	 * @param agentModel the underlying agent model
+	 * Create a new DefaultAgentClient with the given agent API and default options.
+	 * @param agentApi the underlying agent API
 	 * @param defaultOptions default options for all requests
 	 */
-	public DefaultAgentClient(AgentModel agentModel, AgentOptions defaultOptions) {
-		this(agentModel, defaultOptions, new ArrayList<>(), null, List.of());
+	public DefaultAgentClient(AgentApi agentApi, AgentOptions defaultOptions) {
+		this(agentApi, defaultOptions, new ArrayList<>(), null, List.of());
 	}
 
 	/**
-	 * Create a new DefaultAgentClient with the given agent model, default options, and
+	 * Create a new DefaultAgentClient with the given agent API, default options, and
 	 * advisors.
-	 * @param agentModel the underlying agent model
+	 * @param agentApi the underlying agent API
 	 * @param defaultOptions default options for all requests
 	 * @param defaultAdvisors default advisors for all requests
 	 */
-	public DefaultAgentClient(AgentModel agentModel, AgentOptions defaultOptions,
-			List<AgentCallAdvisor> defaultAdvisors) {
-		this(agentModel, defaultOptions, defaultAdvisors, null, List.of());
+	public DefaultAgentClient(AgentApi agentApi, AgentOptions defaultOptions, List<AgentCallAdvisor> defaultAdvisors) {
+		this(agentApi, defaultOptions, defaultAdvisors, null, List.of());
 	}
 
 	/**
-	 * Create a new DefaultAgentClient with the given agent model, default options,
+	 * Create a new DefaultAgentClient with the given agent API, default options,
 	 * advisors, and MCP catalog.
-	 * @param agentModel the underlying agent model
+	 * @param agentApi the underlying agent API
 	 * @param defaultOptions default options for all requests
 	 * @param defaultAdvisors default advisors for all requests
 	 * @param mcpServerCatalog the MCP server catalog, may be null
 	 * @param defaultMcpServerNames default MCP server names for all requests
 	 */
-	public DefaultAgentClient(AgentModel agentModel, AgentOptions defaultOptions,
-			List<AgentCallAdvisor> defaultAdvisors, McpServerCatalog mcpServerCatalog,
-			List<String> defaultMcpServerNames) {
-		this.agentModel = Objects.requireNonNull(agentModel, "AgentModel cannot be null");
+	public DefaultAgentClient(AgentApi agentApi, AgentOptions defaultOptions, List<AgentCallAdvisor> defaultAdvisors,
+			McpServerCatalog mcpServerCatalog, List<String> defaultMcpServerNames) {
+		this.agentApi = Objects.requireNonNull(agentApi, "AgentApi cannot be null");
 		this.defaultOptions = defaultOptions != null ? defaultOptions : new DefaultAgentOptions();
 		this.defaultAdvisors = defaultAdvisors != null ? new ArrayList<>(defaultAdvisors) : new ArrayList<>();
 		this.mcpServerCatalog = mcpServerCatalog;
@@ -130,7 +129,7 @@ public class DefaultAgentClient implements AgentClient {
 
 	@Override
 	public AgentClient.Builder mutate() {
-		return new DefaultAgentClientBuilder(this.agentModel).defaultOptions(this.defaultOptions)
+		return new DefaultAgentClientBuilder(this.agentApi).defaultOptions(this.defaultOptions)
 			.defaultAdvisors(this.defaultAdvisors)
 			.mcpServerCatalog(this.mcpServerCatalog)
 			.defaultMcpServers(this.defaultMcpServerNames);
@@ -235,7 +234,7 @@ public class DefaultAgentClient implements AgentClient {
 			// Build advisor chain with terminal advisor
 			List<AgentCallAdvisor> advisors = new ArrayList<>(DefaultAgentClient.this.defaultAdvisors);
 			advisors.addAll(this.requestAdvisors);
-			advisors.add(new AgentModelCallAdvisor(DefaultAgentClient.this.agentModel));
+			advisors.add(new AgentModelCallAdvisor(DefaultAgentClient.this.agentApi));
 
 			var chain = DefaultAgentCallAdvisorChain.builder().pushAll(advisors).build();
 
