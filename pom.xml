@@ -50,6 +50,7 @@
         <module>agent-models/agent-tck</module>
         <module>agent-models/agent-judge-bridge</module>
         <module>agent-client-core</module>
+        <module>agent-client-spring-boot-autoconfigure</module>
 
         <!-- SDK modules -->
         <module>provider-sdks/gemini-cli-sdk</module>

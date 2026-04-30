@@ -21,7 +21,8 @@
         <!-- Agent Client (includes AgentClient.Builder autoconfiguration) -->
         <dependency>
             <groupId>org.springaicommunity.agents</groupId>
-            <artifactId>agent-client-core</artifactId>
+            <artifactId>agent-client-spring-boot-autoconfigure</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- Qwen Code Agent Model (includes autoconfiguration) -->
