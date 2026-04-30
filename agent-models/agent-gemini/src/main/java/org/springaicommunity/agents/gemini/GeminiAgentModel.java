@@ -119,7 +119,7 @@ public class GeminiAgentModel implements AgentModel {
 			}
 			else {
 				// Fallback to direct execution (should rarely happen)
-				result = geminiClient.query(prompt, cliOptions);
+				result = geminiClient.query(prompt, cliOptions, request.workingDirectory());
 			}
 
 			// Convert to AgentResponse

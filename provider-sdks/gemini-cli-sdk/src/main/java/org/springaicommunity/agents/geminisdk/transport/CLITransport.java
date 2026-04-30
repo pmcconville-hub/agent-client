@@ -106,9 +106,23 @@ public class CLITransport {
 	 * Executes a query using the Gemini CLI.
 	 */
 	public List<Message> executeQuery(String prompt, CLIOptions options) throws GeminiSDKException {
+		return executeQuery(prompt, options, null);
+	}
+
+	/**
+	 * Executes a query using the Gemini CLI with an optional working directory override.
+	 * @param prompt the query prompt
+	 * @param options the CLI options
+	 * @param workingDirOverride if non-null, overrides the transport's default working
+	 * directory
+	 */
+	public List<Message> executeQuery(String prompt, CLIOptions options, Path workingDirOverride)
+			throws GeminiSDKException {
 		if (prompt == null || prompt.trim().isEmpty()) {
 			throw new IllegalArgumentException("Prompt cannot be null or empty");
 		}
+
+		Path effectiveWorkDir = workingDirOverride != null ? workingDirOverride : workingDirectory;
 
 		List<String> command = buildCommand(prompt, options);
 
@@ -121,7 +135,7 @@ public class CLITransport {
 					command.subList(1, command.size()).toArray(new String[0]));
 
 			ProcessResult result = new ProcessExecutor().command(commandArray)
-				.directory(workingDirectory.toFile())
+				.directory(effectiveWorkDir.toFile())
 				.timeout(options.getTimeout().toMillis(), java.util.concurrent.TimeUnit.MILLISECONDS)
 				.readOutput(true)
 				.exitValueNormal()

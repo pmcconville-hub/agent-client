@@ -121,6 +121,17 @@ public class GeminiClient implements AutoCloseable {
 	 * Executes a synchronous query with specified options.
 	 */
 	public QueryResult query(String prompt, CLIOptions options) throws GeminiSDKException {
+		return query(prompt, options, null);
+	}
+
+	/**
+	 * Executes a synchronous query with specified options and working directory override.
+	 * @param prompt the query prompt
+	 * @param options the CLI options
+	 * @param workingDirectory if non-null, overrides the client's default working
+	 * directory
+	 */
+	public QueryResult query(String prompt, CLIOptions options, Path workingDirectory) throws GeminiSDKException {
 		validateConnected();
 
 		if (prompt == null || prompt.trim().isEmpty()) {
@@ -130,7 +141,7 @@ public class GeminiClient implements AutoCloseable {
 		logger.info("Executing query with prompt length: {}", prompt.length());
 
 		Instant startTime = Instant.now();
-		List<Message> messages = transport.executeQuery(prompt, options);
+		List<Message> messages = transport.executeQuery(prompt, options, workingDirectory);
 		Instant endTime = Instant.now();
 
 		Duration duration = Duration.between(startTime, endTime);
