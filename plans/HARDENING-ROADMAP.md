@@ -720,12 +720,12 @@ This roadmap hardens AgentClient for multi-provider reliability after a customer
 
 ### Step 5.5: Global Mode Property
 
-**Problem:** `spring.ai.agents.mode=strict` is documented in `defaults-philosophy.mdx` but not implemented. Only per-provider `spring.ai.agents.codex.mode=strict` works. The global property needs a central binding that propagates to all providers.
+**Problem:** `agent-client.mode=strict` is documented in `defaults-philosophy.mdx` but not implemented. Only per-provider `agent-client.codex.mode=strict` works. The global property needs a central binding that propagates to all providers.
 
 **Work items**:
-- [ ] CREATE global mode property binding (in agent-client-core or autoconfigure module)
+- [ ] CREATE global mode property binding in `agent-client-spring-boot-autoconfigure`
 - [ ] WIRE global mode into each provider's Properties class as fallback when per-provider mode is not set
-- [ ] ADD integration test verifying `spring.ai.agents.mode=strict` affects all providers
+- [ ] ADD integration test verifying `agent-client.mode=strict` affects all providers
 
 **Deliverables**: Global mode property working as documented
 
@@ -754,28 +754,60 @@ Add structured output, sessions, MCP, advisors examples.
 
 ---
 
-## Conventions
+## Stage 6: Cross-Framework Portability (Future)
 
-### Commit Convention
-```
-Step X.Y: Brief description of what was done
-```
+> See `plans/CROSS-FRAMEWORK-DESIGN.md` for full architecture.
 
-### Step Entry Criteria Convention
-Every step's entry criteria includes:
-```markdown
-- [ ] Previous step complete
-- [ ] Read: `plans/learnings/step-{{PREV}}-{{topic}}.md` — prior step learnings
-```
+### Step 6.0: JSON Abstraction Layer
 
-### Step Exit Criteria Convention
-Every step's exit criteria includes:
-```markdown
-- [ ] Create: `plans/learnings/step-X.Y-topic.md`
-- [ ] Update `CLAUDE.md` with distilled learnings
-- [ ] Update `HARDENING-ROADMAP.md` checkboxes
-- [ ] COMMIT
-```
+**Problem:** `agent-model` core uses Jackson (`ObjectMapper`, `@JsonProperty`) directly. This blocks Quarkus (JSON-B) and Micronaut (compile-time serde) adoption.
+
+**Work items**:
+- [ ] CREATE `agent-json-core` module with `JsonCodec` interface + `TypeRef` (follow MCP SDK's `McpJsonMapper` pattern)
+- [ ] CREATE `agent-json-jackson` module with `JacksonJsonCodec` implementation
+- [ ] Replace `ObjectMapper` usage in `agent-model` (`McpServerCatalog`, `StructuredOutputPromptHelper`) with `JsonCodec`
+- [ ] ServiceLoader discovery for `JsonCodec` (same as MCP SDK)
+- [ ] Starters include `agent-json-jackson` transitively
+
+**Deliverables**: Core modules with zero Jackson dependency
+
+---
+
+### Step 6.1: Quarkus Extension
+
+- [ ] CREATE `agent-extension-quarkus` with CDI producer beans
+- [ ] Test with native image compilation
+- [ ] Getting-started doc for Quarkus users
+
+### Step 6.2: Micronaut Factory
+
+- [ ] CREATE `agent-factory-micronaut` with Micronaut bean factory
+- [ ] CREATE `agent-json-micronaut` with Micronaut Serde codec
+- [ ] Test with native image compilation
+- [ ] Getting-started doc for Micronaut users
+
+---
+
+## Next Session Starting Point
+
+**Release 0.16.0 first**, then pick up from Step 5.3 (CLI arg validation tests).
+
+### Key context to load
+- `plans/learnings/LEARNINGS.md` — compacted project knowledge
+- `plans/CROSS-FRAMEWORK-DESIGN.md` — JSON abstraction architecture
+- `CLAUDE.md` — LOOSE derivation table, property prefix mapping, known gaps
+
+### What's ready to release (0.16.0)
+- Autoconfigure extraction (agent-client-core is framework-independent)
+- AgentApi rename with deprecation shim
+- Property prefix rename with DeprecatedPropertyMigrator
+- LOOSE sandbox bypass for Codex
+- Codex model default updated to gpt-5.4-mini
+- Gemini working directory fix
+
+### What's deferred
+- Steps 5.3-5.8: CLI validation, daily CI, global mode, TCK resources, option promotions
+- Stage 6: JSON abstraction, Quarkus, Micronaut
 
 ### Stage Consolidation Convention
 Last step of each stage compacts per-step learnings into `plans/learnings/LEARNINGS.md`.
